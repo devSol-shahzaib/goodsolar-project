@@ -2,10 +2,24 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Sun, Battery, Settings2, ShieldCheck, TrendingUp, Info } from "lucide-react";
+import { Zap, Sun, Battery, Settings2, ShieldCheck, TrendingUp, Info, LucideIcon } from "lucide-react";
+
+interface GlossaryItem {
+  term: string;
+  definition: string;
+  icon?: LucideIcon;
+  expense?: string;
+  benefit?: string;
+}
+
+interface GlossarySection {
+  title: string;
+  icon: LucideIcon;
+  items: GlossaryItem[];
+}
 
 export function SolarGlossary() {
-  const sections = [
+  const sections: GlossarySection[] = [
     {
       title: "Core Concepts",
       icon: Info,
