@@ -21,7 +21,7 @@ export default function InformationPage() {
             </Link>
             
             <Link
-              href="/information"
+              href="/solar-information"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "sm" }),
                 "flex items-center gap-2 font-bold text-[10px] uppercase tracking-widest transition-colors h-8 px-3 text-emerald-700 bg-emerald-50"
