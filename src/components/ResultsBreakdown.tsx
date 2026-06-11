@@ -75,6 +75,60 @@ export function ResultsBreakdown({
         </CardContent>
       </Card>
 
+      {/* 2.5 Appliance Breakdown */}
+      <Card className="border-zinc-200 shadow-sm overflow-hidden rounded-2xl">
+        <CardHeader className="bg-zinc-50/50 border-b border-zinc-100 p-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-xl font-bold text-zinc-900 flex items-center gap-3">
+                <div className="bg-blue-100 p-2 rounded-lg">
+                  <Zap className="w-5 h-5 text-blue-700" />
+                </div>
+                Appliance Breakdown
+              </CardTitle>
+              <CardDescription className="mt-2 text-zinc-500">
+                Detailed list of appliances and their estimated energy consumption.
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent border-zinc-100">
+                <TableHead className="px-8 py-4 font-bold text-zinc-400 uppercase text-[10px] tracking-widest">Appliance</TableHead>
+                <TableHead className="px-8 py-4 font-bold text-zinc-400 uppercase text-[10px] tracking-widest text-center">Qty</TableHead>
+                <TableHead className="px-8 py-4 font-bold text-zinc-400 uppercase text-[10px] tracking-widest text-center">Wattage</TableHead>
+                <TableHead className="px-8 py-4 font-bold text-zinc-400 uppercase text-[10px] tracking-widest text-center">Hours/Day</TableHead>
+                <TableHead className="px-8 py-4 font-bold text-zinc-400 uppercase text-[10px] tracking-widest text-right">Daily kWh</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {input.appliances.map((app, index) => {
+                const dailyKWh = (app.wattage * app.quantity * app.hoursPerDay) / 1000;
+                return (
+                  <TableRow key={index} className="border-zinc-50 hover:bg-zinc-50/50 transition-colors">
+                    <TableCell className="px-8 py-5 font-bold text-zinc-900">{app.name}</TableCell>
+                    <TableCell className="px-8 py-5 text-center text-zinc-500 font-medium">{app.quantity}</TableCell>
+                    <TableCell className="px-8 py-5 text-center text-zinc-500 font-medium">{app.wattage}W</TableCell>
+                    <TableCell className="px-8 py-5 text-center text-zinc-500 font-medium">{app.hoursPerDay}h</TableCell>
+                    <TableCell className="px-8 py-5 text-right font-number font-bold text-zinc-900">
+                      {dailyKWh.toFixed(2)}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              <TableRow className="bg-zinc-50/50 hover:bg-zinc-50 border-t-2 border-zinc-100">
+                <TableCell colSpan={4} className="px-8 py-6 text-lg font-bold text-zinc-900 font-heading text-right">Total Daily Consumption</TableCell>
+                <TableCell className="px-8 py-6 text-right font-number text-2xl font-bold text-zinc-900 tracking-tighter">
+                  {result.dailyConsumptionKWh.toFixed(2)} kWh
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
       {/* 3. Cost Estimate Table */}
       <Card className="border-zinc-200 shadow-sm overflow-hidden rounded-2xl">
         <CardHeader className="bg-zinc-50/50 border-b border-zinc-100 p-8">
