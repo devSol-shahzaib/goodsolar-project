@@ -58,7 +58,20 @@ export function calculateSolarSystem(input: CalculationInput): CalculationResult
   // Formula: (daily_kWh * 1.25 loss factor) / peak_sun_hours
   const systemSizeKW = (dailyConsumptionKWh * 1.25) / city.peakSunHours;
   const numPanels = Math.ceil((systemSizeKW * 1000) / 550);
-  const inverterSizeKW = Math.ceil(systemSizeKW);
+  // An inverter is a power device, so what constrains it is the peak load passing
+  // through it — not the daily energy the panels have to replace. Sizing it from
+  // `systemSizeKW` under-specs it whenever appliances run for few hours a day: a
+  // 1.8kW air conditioner used 2h/day gives a 0.82kW system size, and the report
+  // then recommended a 1kW inverter for an 1800W load, which trips on startup.
+  //
+  // Size against peak load with headroom for motor-start surge (compressors and
+  // pumps draw several times their running current for a moment), and never below
+  // what the array itself can deliver — the opposite case is a house of continuous
+  // low-power loads whose energy requirement outruns its instantaneous draw.
+  const INVERTER_SURGE_HEADROOM = 1.2;
+  const inverterSizeKW = Math.ceil(
+    Math.max((totalLoadW * INVERTER_SURGE_HEADROOM) / 1000, systemSizeKW),
+  );
 
   // 3. Battery Recommendation
   // For simplicity, assume 12V 200Ah batteries (2.4kWh each)
